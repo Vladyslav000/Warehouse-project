@@ -1,9 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <filesystem>
-#include <windows.h>
-#include <clocale>
 
 using namespace std;
 struct Item {
