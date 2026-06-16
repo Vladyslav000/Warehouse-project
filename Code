@@ -59,14 +59,19 @@ void Remove(vector<Item> Items){
 	cout << "Enter name of item which you want remove: ";
 	cin >> SearchName;
 
+    if (Items.empty()) {
+	cout << "Your inventory is empty" << endl;
+	return;
+}
+
 	for (auto ite = Items.begin(); ite != Items.end(); ite++) {
 		if (ite->name == SearchName) {
 			Items.erase(ite);
 			cout << "Item removed" << endl;
+            return;
 		}
-		else if (ite->name != SearchName) {
+		else {
 			cout << "You don't have this item in inventory" << endl;
-			return;
 		}
 	}
 }
