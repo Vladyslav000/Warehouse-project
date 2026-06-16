@@ -1,0 +1,144 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <filesystem>
+#include <windows.h>
+#include <clocale>
+
+using namespace std;
+struct Item {
+	string name;
+	int cost;
+	int impact;
+};
+void AddItems(vector<Item> &Items) {
+	Item item;
+
+	cout << "Enter name of item: ";
+	cin >> item.name;
+
+	cout << "Enter cost of item: ";
+	cin >> item.cost;
+
+	cout << "Enter impact of item: ";
+	cin >> item.impact;
+
+	Items.push_back(item);
+}
+void ShowItems(const vector<Item>& Items) {
+	if(Items.empty()){
+		cout << "No don't have any items" << endl;
+	}
+	for(const auto &item : Items) {
+		cout << item.name << " | " << item.cost << " | " << item.impact << endl;
+	}
+}
+void UseItem(vector<Item> Items) {
+
+	string SearchName;
+	
+	cout << "Enter name of Item: ";
+	cin >> SearchName;
+
+	for(const auto& item : Items) {
+		if (item.name == SearchName) {
+			cout << "You use item" << endl;
+		}
+		else if (item.name != SearchName) {
+			cout << "You don't have this item" << endl;
+		}
+	}
+	if (Items.empty()) {
+		cout << "You doesn't have any items in your inventory" << endl;
+	}
+}
+void Remove(vector<Item> Items){
+
+	string SearchName;
+
+	cout << "Enter name of item which you want remove: ";
+	cin >> SearchName;
+
+	for (auto ite = Items.begin(); ite != Items.end(); ite++) {
+		if (ite->name == SearchName) {
+			Items.erase(ite);
+			cout << "Item removed" << endl;
+		}
+		else if (ite->name != SearchName) {
+			cout << "You don't have this item in inventory" << endl;
+			return;
+		}
+	}
+}
+void Save(const vector<Item>& Items) {
+	ofstream FileOne("It.txt");
+
+	if (!FileOne.is_open()) {
+		cout << "File don't save" << endl;
+		return;
+	}
+	for (const auto& item : Items) {
+		FileOne << item.name << endl;
+		FileOne << item.cost << endl;
+		FileOne << item.impact << endl;
+	}
+	FileOne.close();
+	cout << "File was saved" << endl;
+}
+void Load(vector<Item>& Items) {
+	ifstream FileOne("It.txt");
+
+	if (!FileOne.is_open()) {
+		cout << "File don't load" << endl;
+		return;
+	}
+	for (auto& item : Items) {
+		FileOne >> item.name;
+		FileOne >> item.cost;
+		FileOne >> item.impact;
+	}
+}
+
+int main() {
+	vector<Item> Items;
+	int Item;
+	int cost = 0;
+	int impact;
+	int choice;
+
+	while (true) {
+		cout << "1. Add item\n";
+		cout << "2. Show items\n";
+		cout << "3. Use item\n";
+		cout << "4. Remove item\n";
+		cout << "5. Save\n";
+		cout << "6. Load\n";
+		cout << "7. Exit\n";
+		cout << "Choose your variant: ";
+		cin >> choice;
+
+		if (choice == 1) {
+			AddItems(Items);
+		}
+		if (choice == 2) {
+			ShowItems(Items);
+		}
+		if (choice == 3) {
+			UseItem(Items);
+		}
+		if (choice == 4) {
+			Remove(Items);
+		}
+		if (choice == 5) {
+			Save(Items);
+		}
+		if (choice == 6) {
+			Load(Items);
+		}
+		if (choice == 7) {
+			cout << "Programm shut down" << endl;
+			break;
+		}
+	}
+	return 0;
+}
